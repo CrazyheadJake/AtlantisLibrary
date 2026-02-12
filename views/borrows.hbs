@@ -1,20 +1,19 @@
 <form id="newBorrowForm">
     <div class="mb-3">
-        <label for="bookName" class="form-label">Book</label>
-        <select class="form-select" id="bookName">
-            <option selected>Select a book</option>
-            <option value="1">Book 1</option>
-            <option value="2">Book 2</option>
-            <option value="3">Book 3</option>
+        <label for="bookName" class="form-label">Select one or more books</label>
+        <select class="form-select" multiple id="bookName">
+            <option value="1">Skyward by Brandon Sanderson</option>
+            <option value="2">Jade City by Fonda Lee</option>
+            <option value="3">Mistborn by Brandon Sanderson</option>
         </select>
     </div>
     <div class="mb-3">
         <label for="member" class="form-label">Member</label>
         <select class="form-select" id="member">
             <option selected>Select a member</option>
-            <option value="1">Member 1</option>
-            <option value="2">Member 2</option>
-            <option value="3">Member 3</option>
+            <option value="1">John Smith</option>
+            <option value="2">Jane Doe</option>
+            <option value="3">Tim Jackson</option>
         </select>
     </div>
     <div class="mb-3">
@@ -34,27 +33,26 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Book Borrowed</h5>
+                <h5 class="modal-title">Borrow</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editBorrowForm">
                     <div class="mb-3">
-                        <label for="bookName" class="form-label">Book</label>
-                        <select class="form-select" id="bookName">
-                            <option selected>Select a book</option>
-                            <option value="1">Book 1</option>
-                            <option value="2">Book 2</option>
-                            <option value="3">Book 3</option>
+                        <label for="bookName" class="form-label">Select one or more books</label>
+                        <select class="form-select" multiple id="bookName">
+                            <option value="1">Skyward by Brandon Sanderson</option>
+                            <option value="2">Jade City by Fonda Lee</option>
+                            <option value="3">Mistborn by Brandon Sanderson</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="member" class="form-label">Member</label>
                         <select class="form-select" id="member">
                             <option selected>Select a member</option>
-                            <option value="1">Member 1</option>
-                            <option value="2">Member 2</option>
-                            <option value="3">Member 3</option>
+                            <option value="1">John Smith</option>
+                            <option value="2">Jane Doe</option>
+                            <option value="3">Tim Jackson</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -65,12 +63,14 @@
                         <label for="dueTime" class="form-label">Due Time</label>
                         <input type="datetime-local" class="form-control" id="dueTime">
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Borrow Book</button>
-
+                    <div class="mb-3">
+                        <label for="returnTime" class="form-label">Return Time</label>
+                        <input type="datetime-local" class="form-control" id="returnTime">
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Update Borrow</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

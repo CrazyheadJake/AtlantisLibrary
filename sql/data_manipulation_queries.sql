@@ -14,11 +14,11 @@ FROM Books AS b
 JOIN Authors AS a ON a.authorID=b.authorID
 JOIN Genres AS g ON g.genreCode=b.genreCode;
 
--- Listing all authors
+-- Listing all genres
 SELECT genreName
 FROM Genres;
 
--- Listing all genres
+-- Listing all authors
 SELECT firstName, lastName, bio
 FROM Authors;
 
@@ -63,7 +63,7 @@ VALUES (@borrowIDFromBorrowInsertion, @bookIDFromOneOfDropdownInputsInBorrowInse
 
 -- Updating the information of an existing borrow
 UPDATE Borrows
-SET memberID = @memberIDFromDropdownInput, startTime = @startTimeInput, dueTime = @dueTimeInput
+SET memberID = @memberIDFromDropdownInput, startTime = @startTimeInput, dueTime = @dueTimeInput, returnTime = @returnTimeInput
 WHERE borrowID = @borrowIDFromDropdownInput;
 
 -- Runs in the backend whenever a borrow is updated in order to facilitate the M:M relationship
