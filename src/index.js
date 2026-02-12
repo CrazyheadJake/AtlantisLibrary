@@ -3,7 +3,7 @@ const path = require('path')
 const hbs = require('express-handlebars')
 
 const app = express()
-const PORT = 5173
+const PORT = 5172
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.engine('hbs', hbs.engine({
