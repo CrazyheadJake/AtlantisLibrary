@@ -45,6 +45,10 @@ app.get('/genres', (req, res) => {
 app.get('/borrows', (req, res) => {
     res.render('borrows', { currentPage: 'Borrows' })
 })
+
+app.post('/reset', (req, res) => {
+    res.redirect('/');
+})
 app.listen(PORT, () =>
     console.log(`Server running on http://localhost:${PORT}`)
 )
