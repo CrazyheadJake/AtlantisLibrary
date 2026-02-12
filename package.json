@@ -1,0 +1,28 @@
+{
+  "name": "atlantislibrary",
+  "version": "1.0.0",
+  "description": "A small server that manages a library database",
+  "homepage": "https://github.com/CrazyheadJake/AtlantisLibrary#readme",
+  "bugs": {
+    "url": "https://github.com/CrazyheadJake/AtlantisLibrary/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrazyheadJake/AtlantisLibrary.git"
+  },
+  "license": "ISC",
+  "author": "Jacob Moleski and Reid Minor",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "prod": "forever start src/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "forever": "^4.0.3"
+  }
+}
