@@ -13,7 +13,6 @@ app.engine('hbs', hbs.engine({
     partialsDir: path.join(__dirname, '../views/partials'),
     helpers: {
         navActive: (targetPage, currentPage) => {
-            console.log(`Comparing targetPage: ${targetPage} with activePage: ${currentPage}`);
             return targetPage === currentPage ? 'active' : '';
         }
     }
