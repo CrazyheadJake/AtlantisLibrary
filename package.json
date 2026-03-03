@@ -26,6 +26,6 @@
     "express": "^5.2.1",
     "express-handlebars": "^8.0.3",
     "forever": "^4.0.3",
-    "mariadb": "^3.5.1"
+    "mariadb": "^3.2.3"
   }
 }
