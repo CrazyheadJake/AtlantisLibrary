@@ -7,12 +7,13 @@ CREATE OR REPLACE TABLE Authors (
     firstName VARCHAR(50) NOT NULL,
     lastName VARCHAR(50) NOT NULL,
     bio VARCHAR(800),
-    PRIMARY KEY(authorID)
+    PRIMARY KEY(authorID),
+    CONSTRAINT uniqueName UNIQUE (firstName, lastName)
 );
 
 CREATE OR REPLACE TABLE Genres (
     genreCode INT AUTO_INCREMENT,
-    genreName VARCHAR(50) NOT NULL,
+    genreName VARCHAR(50) NOT NULL UNIQUE,
     PRIMARY KEY(genreCode)
 );
 
