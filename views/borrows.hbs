@@ -2,18 +2,18 @@
     <div class="mb-3">
         <label for="bookName" class="form-label">Select one or more books</label>
         <select class="form-select" multiple id="bookName">
-            <option value="1">Skyward by Brandon Sanderson</option>
-            <option value="2">Jade City by Fonda Lee</option>
-            <option value="3">Mistborn by Brandon Sanderson</option>
+            {{#each books}}
+            <option value="{{this.bookID}}">{{this.title}} by {{this.firstName}} {{this.lastName}}</option>
+            {{/each}}
         </select>
     </div>
     <div class="mb-3">
         <label for="member" class="form-label">Member</label>
         <select class="form-select" id="member">
             <option selected>Select a member</option>
-            <option value="1">John Smith</option>
-            <option value="2">Jane Doe</option>
-            <option value="3">Tim Jackson</option>
+            {{#each members}}
+            <option value="{{this.memberID}}">{{this.firstName}} {{this.lastName}}</option>
+            {{/each}}
         </select>
     </div>
     <div class="mb-3">
@@ -41,18 +41,18 @@
                     <div class="mb-3">
                         <label for="bookName" class="form-label">Select one or more books</label>
                         <select class="form-select" multiple id="bookName">
-                            <option value="1">Skyward by Brandon Sanderson</option>
-                            <option value="2">Jade City by Fonda Lee</option>
-                            <option value="3">Mistborn by Brandon Sanderson</option>
+                            {{#each books}}
+                            <option value="{{this.bookID}}">{{this.title}} by {{this.firstName}} {{this.lastName}}</option>
+                            {{/each}}
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="member" class="form-label">Member</label>
                         <select class="form-select" id="member">
                             <option selected>Select a member</option>
-                            <option value="1">John Smith</option>
-                            <option value="2">Jane Doe</option>
-                            <option value="3">Tim Jackson</option>
+                            {{#each members}}
+                            <option value="{{this.memberID}}">{{this.firstName}} {{this.lastName}}</option>
+                            {{/each}}
                         </select>
                     </div>
                     <div class="mb-3">

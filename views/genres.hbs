@@ -15,14 +15,10 @@
     </tr>
   </thead>
   <tbody>
+    {{#each genres}}
     <tr>
-      <td>Fantasy</td>
+      <td>{{this.genreName}}</td>
     </tr>
-    <tr>
-      <td>Science Fiction</td>
-    </tr>
-    <tr>
-      <td>Romance</td>
-    </tr>
+    {{/each}}
   </tbody>
 </table>

@@ -26,20 +26,12 @@
     </tr>
   </thead>
   <tbody>
+    {{#each members}}
     <tr>
-      <td>John</td>
-      <td>Smith</td>
-      <td>johnsmith@example.com</td>
+      <td>{{this.firstName}}</td>
+      <td>{{this.lastName}}</td>
+      <td>{{this.email}}</td>
     </tr>
-    <tr>
-      <td>Jane</td>
-      <td>Doe</td>
-      <td>jane.doe@example.com</td>
-    </tr>
-    <tr>
-      <td>Tim</td>
-      <td>Jackson</td>
-      <td>tim.jackson@example.com</td>
-    </tr>
+    {{/each}}
   </tbody>
 </table>

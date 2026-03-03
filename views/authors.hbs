@@ -25,15 +25,12 @@
     </tr>
   </thead>
   <tbody>
+    {{#each authors}}
     <tr>
-      <td>Brandon</td>
-      <td>Sanderson</td>
-      <td>Prolific fantasy author well-known for his work on the 'Cosmere' fantasy universe.</td>
+      <td>{{this.firstName}}</td>
+      <td>{{this.lastName}}</td>
+      <td>{{this.bio}}</td>
     </tr>
-    <tr>
-      <td>Fonda</td>
-      <td>Lee</td>
-      <td>Canadian-American author best known for the Green Bone Saga.</td>
-    </tr>
+    {{/each}}
   </tbody>
 </table>

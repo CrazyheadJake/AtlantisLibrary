@@ -1,23 +1,24 @@
-<form>
+<form method="POST" action="/books">
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" placeholder="Enter title">
+        <input type="text" class="form-control" id="title" placeholder="Enter title" name="title">
     </div>
     <div class="mb-3">
         <label for="author" class="form-label">Author</label>
-        <select class="form-select" id="author">
+        <select class="form-select" id="author" name="author">
             <option selected>Select an author</option>
-            <option value="1">Brandon Sanderson</option>
-            <option value="2">Fonda Lee</option>
+            {{#each authors}}
+            <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
+            {{/each}}
         </select>
     </div>
     <div class="mb-3">
         <label for="genre" class="form-label">Genre</label>
-        <select class="form-select" id="genre">
+        <select class="form-select" id="genre" name="genre">
             <option selected>Select a genre</option>
-            <option value="1">Fantasy</option>
-            <option value="2">Science Fiction</option>
-            <option value="3">Romance</option>
+            {{#each genres}}
+            <option value="{{this.genreCode}}">{{this.genreName}}</option>
+            {{/each}}
         </select>
     </div>
     <div class="mb-3">
@@ -30,4 +31,6 @@
     <button class="btn mx-2 btn-success" type="submit">Search</button>
 </form>
 <br>
-<p>This will list all books that match the title that was searched, or show all books if the search bar is empty</p>
+{{#each books}}
+    <div class="alert alert-secondary m-0">{{this.title}} by {{this.firstName}} {{this.lastName}}</div>
+{{/each}}
