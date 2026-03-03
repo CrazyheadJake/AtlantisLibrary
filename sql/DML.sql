@@ -27,7 +27,7 @@ SELECT firstName, lastName, email
 FROM Members;
 
 -- Listing all borrow entries
-SELECT m.lastName, b.startTime, b.dueTime
+SELECT m.firstName, m.lastName, b.startTime, b.dueTime
 FROM Borrows AS b
 JOIN Members AS m ON m.memberID=b.memberID;
 

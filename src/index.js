@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const hbs = require('express-handlebars')
-const { pool, resetDb, getAuthors, getBooks, getGenres, getMembers, insertBook } = require('./db')
+const { pool, resetDb, getAuthors, getBooks, getGenres, getMembers, insertBook, getBorrows} = require('./db')
 
 const app = express()
 const PORT = 5172
@@ -52,7 +52,8 @@ app.get('/genres', async (req, res) => {
 app.get('/borrows', async (req, res) => {
     const books = await getBooks()
     const members = await getMembers()
-    res.render('borrows', { currentPage: 'Borrows', books, members })
+    const borrows = await getBorrows()
+    res.render('borrows', { currentPage: 'Borrows', books, members, borrows })
 })
 
 app.post('/reset', async (req, res) => {

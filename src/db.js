@@ -35,4 +35,10 @@ async function getGenres() {
     return genres;
 }
 
-module.exports = {pool, resetDb, getAuthors, getBooks, getMembers, getGenres, insertBook};
+async function getBorrows() {
+    const borrows = await pool.query('SELECT m.firstName, m.lastName, b.startTime, b.dueTime FROM Borrows AS b JOIN Members AS m ON m.memberID=b.memberID;');
+    return borrows;
+}
+
+
+module.exports = {pool, resetDb, getAuthors, getBooks, getMembers, getGenres, insertBook, getBorrows};
