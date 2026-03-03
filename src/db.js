@@ -1,5 +1,6 @@
-const mariadb = require('mariadb');
-const pool = mariadb.createPool({
+import { createPool } from 'mariadb'
+
+const pool = createPool({
     host: 'classmysql.engr.oregonstate.edu',
     user: 'cs340_moleskij',
     password: '1768',
@@ -41,4 +42,4 @@ async function getBorrows() {
 }
 
 
-module.exports = {pool, resetDb, getAuthors, getBooks, getMembers, getGenres, insertBook, getBorrows};
+export {pool, resetDb, getAuthors, getBooks, getMembers, getGenres, insertBook, getBorrows};
