@@ -1,6 +1,6 @@
+DROP PROCEDURE IF EXISTS reset_database;
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS reset_database;
 CREATE PROCEDURE reset_database ()
 BEGIN
     SET FOREIGN_KEY_CHECKS=1;

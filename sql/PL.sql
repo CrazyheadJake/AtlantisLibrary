@@ -1,6 +1,6 @@
+DROP PROCEDURE IF EXISTS insert_book;
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS insert_book;
 CREATE PROCEDURE insert_book (IN pTitle VARCHAR(50), IN pAuthorFirstName VARCHAR(50), IN pAuthorLastName VARCHAR(50), IN pGenreName VARCHAR(50))
 BEGIN
     DECLARE pAuthorID INT;
