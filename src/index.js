@@ -87,6 +87,37 @@ app.post('/genres', async (req, res) => {
     res.redirect('/genres');
 });
 
+app.post('/borrows', async (req, res) => {
+    let connection;
+    try {
+        // 1. Check out a dedicated connection from the pool
+        connection = await pool.getConnection();
+
+        // 2. Call the procedure
+        await connection.query(
+            'CALL insert_borrow(?, ?, ?, @borrowID);', 
+            [req.body.member, req.body.startTime, req.body.dueTime]
+        );
+        
+        // 3. Query the session variable (NO array destructuring brackets here!)
+        const rows = await connection.query('SELECT @borrowID AS borrowID;');
+        
+        // 4. Extract the ID directly from the first index of the array
+        const borrowID = rows[0].borrowID;
+        console.log("books: ", req.body.books)
+        console.log("borrowid: ", borrowID)
+        console.log("Last insert ID: ", (await pool.query('SELECT LAST_INSERT_ID() AS borrowID;'))[0].borrowID)
+        for (const bookID of req.body.books) {
+            await pool.query('CALL add_book_to_borrow(?, ?);', [borrowID, bookID]);
+        }
+        res.redirect('/borrows');
+    } catch (err) {
+        console.error("Error processing borrow: ", err);
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
 app.listen(PORT, () =>
     console.log(`Server running on http://localhost:${PORT}`)
 )

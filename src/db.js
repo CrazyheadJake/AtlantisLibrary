@@ -18,7 +18,7 @@ async function getAuthors() {
 }
 
 async function getBooks() {
-    const books = await pool.query('SELECT b.title, a.firstName, a.lastName, g.genreName FROM Books AS b JOIN Authors AS a ON a.authorID=b.authorID JOIN Genres AS g ON g.genreCode=b.genreCode;');
+    const books = await pool.query('SELECT b.bookID, b.title, a.firstName, a.lastName, g.genreName FROM Books AS b JOIN Authors AS a ON a.authorID=b.authorID JOIN Genres AS g ON g.genreCode=b.genreCode;');
     return books;
 }
 

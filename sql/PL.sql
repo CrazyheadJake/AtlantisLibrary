@@ -59,12 +59,14 @@ DELIMITER ;
 
 DROP PROCEDURE IF EXISTS insert_borrow;
 DELIMITER //
-CREATE PROCEDURE insert_borrow (IN pMemberID INT, IN pStartTime DATETIME, IN pDueTime DATETIME)
+CREATE PROCEDURE insert_borrow (IN pMemberID INT, IN pStartTime DATETIME, IN pDueTime DATETIME, OUT pBorrowID INT)
 BEGIN
     START TRANSACTION;
 
     INSERT INTO Borrows (memberID, startTime, dueTime) VALUES
     (pMemberID, pStartTime, pDueTime);
+
+    SET pBorrowID = LAST_INSERT_ID();
 
     COMMIT;
 END //
