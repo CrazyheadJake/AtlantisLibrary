@@ -72,6 +72,21 @@ app.post('/books', async (req, res) => {
     res.redirect('/books')
 })
 
+app.post('/authors', async (req, res) => {
+    await pool.query('CALL insert_author(?, ?, ?);', [req.body.firstName, req.body.lastName, req.body.bio]);
+    res.redirect('/authors');
+});
+
+app.post('/members', async (req, res) => {
+    await pool.query('CALL insert_member(?, ?, ?);', [req.body.firstName, req.body.lastName, req.body.email]);
+    res.redirect('/members');
+});
+
+app.post('/genres', async (req, res) => {
+    await pool.query('CALL insert_genre(?);', [req.body.genreName]);
+    res.redirect('/genres');
+});
+
 app.listen(PORT, () =>
     console.log(`Server running on http://localhost:${PORT}`)
 )

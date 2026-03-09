@@ -1,15 +1,15 @@
-<form>
+<form method="POST" action="/authors">
     <div class="mb-3">
         <label for="firstName" class="form-label">First Name</label>
-        <input type="text" class="form-control" id="firstName" placeholder="Enter first name">
+        <input type="text" class="form-control" name="firstName" id="firstName" placeholder="Enter first name">
     </div>
     <div class="mb-3">
         <label for="lastName" class="form-label">Last Name</label>
-        <input type="text" class="form-control" id="lastName" placeholder="Enter last name">
+        <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Enter last name">
     </div>
     <div class="mb-3">
         <label for="bio" class="form-label">Biography</label>
-        <textarea class="form-control" id="bio" placeholder="Enter biography"></textarea>
+        <textarea class="form-control" name="bio" id="bio" placeholder="Enter biography"></textarea>
     </div>
     <div class="mb-3">
         <button type="submit" class="btn btn-primary">Add Author</button>

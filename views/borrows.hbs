@@ -1,7 +1,7 @@
 <form id="newBorrowForm">
     <div class="mb-3">
-        <label for="bookName" class="form-label">Select one or more books</label>
-        <select class="form-select" multiple id="bookName">
+        <label for="books" class="form-label">Select one or more books</label>
+        <select class="form-select" multiple id="books" name="books">
             {{#each books}}
             <option value="{{this.bookID}}">{{this.title}} by {{this.firstName}} {{this.lastName}}</option>
             {{/each}}
@@ -9,7 +9,7 @@
     </div>
     <div class="mb-3">
         <label for="member" class="form-label">Member</label>
-        <select class="form-select" id="member">
+        <select class="form-select" id="member" name="member">
             <option selected>Select a member</option>
             {{#each members}}
             <option value="{{this.memberID}}">{{this.firstName}} {{this.lastName}}</option>
@@ -18,11 +18,11 @@
     </div>
     <div class="mb-3">
         <label for="startTime" class="form-label">Start Time</label>
-        <input type="datetime-local" class="form-control" id="startTime">
+        <input type="datetime-local" class="form-control" id="startTime" name="startTime">
     </div>
     <div class="mb-3">
         <label for="dueTime" class="form-label">Due Time</label>
-        <input type="datetime-local" class="form-control" id="dueTime">
+        <input type="datetime-local" class="form-control" id="dueTime" name="dueTime">
     </div>
 
     <button type="submit" class="btn btn-primary">Borrow Book</button>
@@ -100,3 +100,11 @@
         </div>
     </div>
 </form>
+
+<script>
+    const start = new Date()
+    start.setMinutes(start.getMinutes() - start.getTimezoneOffset());
+    document.getElementById("startTime").value = start.toISOString().slice(0, 16);
+    start.setMinutes(start.getMinutes() + 14 * 24 * 60);
+    document.getElementById("dueTime").value = start.toISOString().slice(0, 16);
+</script>
