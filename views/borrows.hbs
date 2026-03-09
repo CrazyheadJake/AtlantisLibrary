@@ -40,7 +40,7 @@
                 <form id="editBorrowForm">
                     <div class="mb-3">
                         <label for="bookName" class="form-label">Select one or more books</label>
-                        <select class="form-select" multiple id="bookName">
+                        <select class="form-select" multiple id="editbookName">
                             {{#each books}}
                             <option value="{{this.bookID}}">{{this.title}} by {{this.firstName}} {{this.lastName}}</option>
                             {{/each}}
@@ -48,7 +48,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="member" class="form-label">Member</label>
-                        <select class="form-select" id="member">
+                        <select class="form-select" id="editmember">
                             <option selected>Select a member</option>
                             {{#each members}}
                             <option value="{{this.memberID}}">{{this.firstName}} {{this.lastName}}</option>
@@ -57,15 +57,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="startTime" class="form-label">Start Time</label>
-                        <input type="datetime-local" class="form-control" id="startTime">
+                        <input type="datetime-local" class="form-control" id="editstartTime">
                     </div>
                     <div class="mb-3">
                         <label for="dueTime" class="form-label">Due Time</label>
-                        <input type="datetime-local" class="form-control" id="dueTime">
+                        <input type="datetime-local" class="form-control" id="editdueTime">
                     </div>
                     <div class="mb-3">
                         <label for="returnTime" class="form-label">Return Time</label>
-                        <input type="datetime-local" class="form-control" id="returnTime">
+                        <input type="datetime-local" class="form-control" id="editreturnTime">
                     </div>
                 </form>
             </div>
@@ -89,7 +89,7 @@
             </select>
         </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBorrow">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBorrow" onclick="setBorrow()">
                 Update Borrow
             </button>
         </div>
@@ -107,4 +107,26 @@
     document.getElementById("startTime").value = start.toISOString().slice(0, 16);
     start.setMinutes(start.getMinutes() + 14 * 24 * 60);
     document.getElementById("dueTime").value = start.toISOString().slice(0, 16);
+
+    function setBorrow() {
+        console.log("Setting borrow")
+        const borrowID = document.getElementById("borrow").value;
+        console.log("Borrow ID: ", borrowID)
+        const borrowsList = {{{borrowsJSON}}};
+        const borrow = borrowsList.find(b => b.borrowID == borrowID);
+        console.log("Borrow: ", borrow)
+        console.log("borrowsList: ", borrowsList)
+        const editStartTime = document.getElementById("editstartTime");
+        const editDueTime = document.getElementById("editdueTime");
+        const editReturnTime = document.getElementById("editreturnTime");
+        const editMember = document.getElementById("editmember");
+        const editBookName = document.getElementById("editbookName");
+        editStartTime.value = new Date(borrow.startTime).toISOString().slice(0, 16);
+        editDueTime.value = new Date(borrow.dueTime).toISOString().slice(0, 16);
+        editReturnTime.value = borrow.returnTime ? new Date(borrow.returnTime).toISOString().slice(0, 16) : "";
+        editMember.value = borrow.memberID;
+        for (const option of editBookName.options) {
+            option.selected = borrow.books.some(b => b.bookID == option.value);
+        }
+    }
 </script>

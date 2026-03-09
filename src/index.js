@@ -1,7 +1,7 @@
 import express from 'express'
 import path from 'path'
 import hbs from 'express-handlebars'
-import { pool, resetDb, getAuthors, getBooks, getGenres, getMembers, insertBook, getBorrows} from './db.js'
+import { pool, resetDb, getAuthors, getBooks, getGenres, getMembers, insertBook, getBorrows, getFullBorrows} from './db.js'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
@@ -57,7 +57,7 @@ app.get('/borrows', async (req, res) => {
     const books = await getBooks()
     const members = await getMembers()
     const borrows = await getBorrows()
-    res.render('borrows', { currentPage: 'Borrows', books, members, borrows })
+    res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(await getFullBorrows()) })
 })
 
 app.post('/reset', async (req, res) => {
@@ -90,23 +90,14 @@ app.post('/genres', async (req, res) => {
 app.post('/borrows', async (req, res) => {
     let connection;
     try {
-        // 1. Check out a dedicated connection from the pool
         connection = await pool.getConnection();
-
-        // 2. Call the procedure
         await connection.query(
             'CALL insert_borrow(?, ?, ?, @borrowID);', 
             [req.body.member, req.body.startTime, req.body.dueTime]
         );
         
-        // 3. Query the session variable (NO array destructuring brackets here!)
         const rows = await connection.query('SELECT @borrowID AS borrowID;');
-        
-        // 4. Extract the ID directly from the first index of the array
         const borrowID = rows[0].borrowID;
-        console.log("books: ", req.body.books)
-        console.log("borrowid: ", borrowID)
-        console.log("Last insert ID: ", (await pool.query('SELECT LAST_INSERT_ID() AS borrowID;'))[0].borrowID)
         for (const bookID of req.body.books) {
             await pool.query('CALL add_book_to_borrow(?, ?);', [borrowID, bookID]);
         }

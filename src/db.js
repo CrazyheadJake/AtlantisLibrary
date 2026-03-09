@@ -37,9 +37,17 @@ async function getGenres() {
 }
 
 async function getBorrows() {
-    const borrows = await pool.query('SELECT m.firstName, m.lastName, b.startTime, b.dueTime FROM Borrows AS b JOIN Members AS m ON m.memberID=b.memberID;');
+    const borrows = await pool.query('SELECT b.borrowID, m.firstName, m.lastName, b.startTime, b.dueTime FROM Borrows AS b JOIN Members AS m ON m.memberID=b.memberID;');
+    return borrows;
+}
+
+async function getFullBorrows() {
+    const borrows = await pool.query('SELECT * from Borrows;');
+    // for (const borrow of borrows) {
+    //     borrow.books = await pool.query('SELECT bookID, title FROM Books AS bb WHERE bb.borrowID=?;', [borrow.borrowID]);
+    // }
     return borrows;
 }
 
 
-export {pool, resetDb, getAuthors, getBooks, getMembers, getGenres, insertBook, getBorrows};
+export {pool, resetDb, getAuthors, getBooks, getMembers, getGenres, insertBook, getBorrows, getFullBorrows};
