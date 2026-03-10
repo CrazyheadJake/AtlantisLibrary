@@ -1,4 +1,4 @@
-<form id="newBorrowForm" method="POST" action="/borrows"x>
+<form id="newBorrowForm" method="POST" action="/borrows/insert"x>
     <div class="mb-3">
         <label for="books" class="form-label">Select one or more books</label>
         <select class="form-select" multiple id="books" name="books">
@@ -37,10 +37,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="editBorrowForm">
+                <form id="editBorrowForm" method="POST" action="/borrows/update">
+                    <input type="hidden" id="editborrowID" name="editborrowID">
                     <div class="mb-3">
                         <label for="bookName" class="form-label">Select one or more books</label>
-                        <select class="form-select" multiple id="editbookName">
+                        <select class="form-select" multiple id="editbookName" name="editbookName">
                             {{#each books}}
                             <option value="{{this.bookID}}">{{this.title}} by {{this.firstName}} {{this.lastName}}</option>
                             {{/each}}
@@ -48,7 +49,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="member" class="form-label">Member</label>
-                        <select class="form-select" id="editmember">
+                        <select class="form-select" id="editmember" name="editmember">
                             <option selected>Select a member</option>
                             {{#each members}}
                             <option value="{{this.memberID}}">{{this.firstName}} {{this.lastName}}</option>
@@ -57,20 +58,20 @@
                     </div>
                     <div class="mb-3">
                         <label for="startTime" class="form-label">Start Time</label>
-                        <input type="datetime-local" class="form-control" id="editstartTime">
+                        <input type="datetime-local" class="form-control" id="editstartTime" name="editstartTime">
                     </div>
                     <div class="mb-3">
                         <label for="dueTime" class="form-label">Due Time</label>
-                        <input type="datetime-local" class="form-control" id="editdueTime">
+                        <input type="datetime-local" class="form-control" id="editdueTime" name="editdueTime">
                     </div>
                     <div class="mb-3">
                         <label for="returnTime" class="form-label">Return Time</label>
-                        <input type="datetime-local" class="form-control" id="editreturnTime">
+                        <input type="datetime-local" class="form-control" id="editreturnTime" name="editreturnTime">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Update Borrow</button>
+                <button type="submit" class="btn btn-primary" form="editBorrowForm" onclick="location.reload()">Update Borrow</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
@@ -81,7 +82,7 @@
     <div class="row mb-3">
         <label for="borrow" class="form-label">Borrow</label>
         <div class="col">
-            <select class="form-select" id="borrow">
+            <select class="form-select" name="borrow" id="borrow">
                 <option selected>Select a Borrow to edit</option>
                 {{#each borrows}}
                 <option value="{{this.borrowID}}">{{this.firstName}} {{this.lastName}} borrowed on {{this.startTime}}</option>
@@ -94,7 +95,7 @@
             </button>
         </div>
         <div class="col-auto">
-            <button type="button" class="btn btn-danger">
+            <button type="submit" class="btn btn-danger" formmethod="POST" formaction="/borrows/delete">
                 Delete Borrow
             </button>
         </div>
@@ -116,11 +117,13 @@
         const borrow = borrowsList.find(b => b.borrowID == borrowID);
         console.log("Borrow: ", borrow)
         console.log("borrowsList: ", borrowsList)
+        const editBorrowID = document.getElementById("editborrowID");
         const editStartTime = document.getElementById("editstartTime");
         const editDueTime = document.getElementById("editdueTime");
         const editReturnTime = document.getElementById("editreturnTime");
         const editMember = document.getElementById("editmember");
         const editBookName = document.getElementById("editbookName");
+        editBorrowID.value = borrowID;
         editStartTime.value = new Date(borrow.startTime).toISOString().slice(0, 16);
         editDueTime.value = new Date(borrow.dueTime).toISOString().slice(0, 16);
         editReturnTime.value = borrow.returnTime ? new Date(borrow.returnTime).toISOString().slice(0, 16) : "";

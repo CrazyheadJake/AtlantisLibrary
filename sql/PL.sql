@@ -84,3 +84,43 @@ BEGIN
     COMMIT;
 END //
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS delete_borrow;
+DELIMITER //
+CREATE PROCEDURE delete_borrow (IN pBorrowID INT)
+BEGIN
+    START TRANSACTION;
+
+    DELETE FROM Borrows
+    WHERE pBorrowID = borrowID;
+
+    COMMIT;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS update_borrow;
+DELIMITER //
+CREATE PROCEDURE update_borrow (IN pBorrowID INT, IN pMemberID INT, IN pStartTime DATETIME, IN pReturnTime DATETIME, IN pDueTime DATETIME)
+BEGIN
+    START TRANSACTION;
+
+    UPDATE Borrows
+    SET memberID = pMemberID, startTime = pStartTime, returnTime = pReturnTime, dueTime = pDueTime
+    WHERE borrowID = pBorrowID;
+
+    COMMIT;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS clear_books_borrows;
+DELIMITER //
+CREATE PROCEDURE clear_books_borrows (IN pBorrowID INT)
+BEGIN
+    START TRANSACTION;
+
+    DELETE FROM Books_Borrows
+    WHERE borrowID = pBorrowID;
+
+    COMMIT;
+END //
+DELIMITER ;

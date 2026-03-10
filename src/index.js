@@ -87,7 +87,7 @@ app.post('/genres', async (req, res) => {
     res.redirect('/genres');
 });
 
-app.post('/borrows', async (req, res) => {
+app.post('/borrows/insert', async (req, res) => {
     let connection;
     try {
         connection = await pool.getConnection();
@@ -107,6 +107,31 @@ app.post('/borrows', async (req, res) => {
     } finally {
         if (connection) connection.release();
     }
+});
+
+app.post('/borrows/update', async (req, res) => {
+    const { editborrowID, editmember, editstartTime, editreturnTime, editdueTime} = req.body
+    console.log("Updating Borrow: ", editborrowID, editmember, editstartTime, editreturnTime, editdueTime);
+    await pool.query('CALL update_borrow(?, ?, ?, ?, ?);', [editborrowID, editmember, editstartTime, editreturnTime, editdueTime]);
+
+    await pool.query('CALL clear_books_borrows(?);', [editborrowID]);
+
+    let books = req.body.editbookName;
+    if (!books) {
+        books = [];
+    } 
+    else if (!Array.isArray(books)) {
+        books = [books];
+    }
+    
+    for (const bookID of books) {
+        await pool.query('CALL add_book_to_borrow(?, ?);', [editborrowID, bookID]);
+    }
+});
+
+app.post('/borrows/delete', async (req, res) => {
+    await pool.query('CALL delete_borrow(?);', [req.body.borrow]);
+    res.redirect('/borrows');
 });
 
 app.listen(PORT, () =>
