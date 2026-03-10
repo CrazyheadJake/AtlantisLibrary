@@ -110,13 +110,9 @@
     document.getElementById("dueTime").value = start.toISOString().slice(0, 16);
 
     function setBorrow() {
-        console.log("Setting borrow")
         const borrowID = document.getElementById("borrow").value;
-        console.log("Borrow ID: ", borrowID)
         const borrowsList = {{{borrowsJSON}}};
         const borrow = borrowsList.find(b => b.borrowID == borrowID);
-        console.log("Borrow: ", borrow)
-        console.log("borrowsList: ", borrowsList)
         const editBorrowID = document.getElementById("editborrowID");
         const editStartTime = document.getElementById("editstartTime");
         const editDueTime = document.getElementById("editdueTime");

@@ -57,6 +57,7 @@ app.get('/borrows', async (req, res) => {
     const books = await getBooks()
     const members = await getMembers()
     const borrows = await getBorrows()
+    console.log("Borrows: ", JSON.stringify(await getFullBorrows()));
     res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(await getFullBorrows()) })
 })
 
@@ -127,6 +128,7 @@ app.post('/borrows/update', async (req, res) => {
     for (const bookID of books) {
         await pool.query('CALL add_book_to_borrow(?, ?);', [editborrowID, bookID]);
     }
+    res.redirect('/borrows');
 });
 
 app.post('/borrows/delete', async (req, res) => {
