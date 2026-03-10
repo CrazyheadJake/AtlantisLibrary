@@ -43,7 +43,7 @@ async function getBorrows() {
 
 async function getFullBorrows() {
     const borrows = await pool.query('SELECT * from Borrows;');
-    const books = await pool.query('SELECT bb.borrowID, bk.bookID FROM Books_Borrows AS bb JOIN Books AS bk ON bk.bookID=bb.bookID;');
+    const books = await pool.query('SELECT * FROM Books_Borrows;');
     for (const book of books) {
         borrows.find(b => b.borrowID === book.borrowID).books = borrows.find(b => b.borrowID === book.borrowID).books || [];
         borrows.find(b => b.borrowID === book.borrowID).books.push({bookID: book.bookID});

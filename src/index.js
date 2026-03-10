@@ -38,9 +38,11 @@ app.get('/authors', async (req, res) => {
 })
 
 app.get('/books', async (req, res) => {
-    const authors = await getAuthors()
-    const books = await getBooks()
-    const genres = await getGenres()
+    const [authors, books, genres] = await Promise.all([
+        getAuthors(),
+        getBooks(),
+        getGenres()
+    ]);
     res.render('books', { currentPage: 'Books', authors, books, genres, booksJSON: JSON.stringify(books), error: req.query.error})
 })
 
@@ -55,10 +57,13 @@ app.get('/genres', async (req, res) => {
 })
 
 app.get('/borrows', async (req, res) => {
-    const books = await getBooks()
-    const members = await getMembers()
-    const borrows = await getBorrows()
-    res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(await getFullBorrows()), error: req.query.error })
+    const [books, members, borrows, fullBorrows] = await Promise.all([
+        getBooks(),
+        getMembers(),
+        getBorrows(),
+        getFullBorrows()
+    ]);
+    res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(fullBorrows), error: req.query.error })
 })
 
 app.post('/reset', async (req, res) => {
