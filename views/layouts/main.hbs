@@ -13,7 +13,11 @@
 
 <body>
     {{> navbar currentPage=currentPage}}
+   
     <main>
+        <div class="alert alert-danger m-0" role="alert" id="errormsg" style="display: none;">
+            {{error}}
+        </div>
         <div class="container-fluid bg-body-secondary min-vh-100 p-5">
             {{{body}}}
         </div>
@@ -23,5 +27,18 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
 </body>
+
+<script>
+    function hideError() {
+        document.getElementById("errormsg").style.display = "none";
+    }
+    function showError() {
+        document.getElementById("errormsg").style.display = "block";
+    }
+    if (document.getElementById("errormsg").innerText.trim() !== "") {
+        showError();
+        setTimeout(hideError, 4000);
+    }
+</script>
 
 </html>

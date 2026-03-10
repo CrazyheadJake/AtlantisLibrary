@@ -4,6 +4,7 @@ import hbs from 'express-handlebars'
 import { pool, resetDb, getAuthors, getBooks, getGenres, getMembers, insertBook, getBorrows, getFullBorrows} from './db.js'
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { error } from 'console';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -33,14 +34,14 @@ app.get('/', (req, res) => {
 
 app.get('/authors', async (req, res) => {
     const authors = await getAuthors()
-    res.render('authors', { currentPage: 'Authors', authors })
+    res.render('authors', { currentPage: 'Authors', authors, error: req.query.error })
 })
 
 app.get('/books', async (req, res) => {
     const authors = await getAuthors()
     const books = await getBooks()
     const genres = await getGenres()
-    res.render('books', { currentPage: 'Books', authors, books, genres, booksJSON: JSON.stringify(books) })
+    res.render('books', { currentPage: 'Books', authors, books, genres, booksJSON: JSON.stringify(books), error: req.query.error})
 })
 
 app.get('/members', async (req, res) => {
@@ -50,15 +51,14 @@ app.get('/members', async (req, res) => {
 
 app.get('/genres', async (req, res) => {
     const genres = await getGenres()
-    res.render('genres', { currentPage: 'Genres', genres })
+    res.render('genres', { currentPage: 'Genres', genres, error: req.query.error })
 })
 
 app.get('/borrows', async (req, res) => {
     const books = await getBooks()
     const members = await getMembers()
     const borrows = await getBorrows()
-    console.log("Borrows: ", JSON.stringify(await getFullBorrows()));
-    res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(await getFullBorrows()) })
+    res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(await getFullBorrows()), error: req.query.error })
 })
 
 app.post('/reset', async (req, res) => {
@@ -67,15 +67,23 @@ app.post('/reset', async (req, res) => {
 })
 
 app.post('/books', async (req, res) => {
+    if (!req.body.title || !req.body.author || !req.body.genre) {
+        res.redirect('/books?error=Please+fill+in+all+fields');
+        return;
+    }
     const { title, author, genre } = req.body
-    console.log("Inserting book: ", title, author, genre)
     await insertBook(title, author, genre)
     res.redirect('/books')
 })
 
 app.post('/authors', async (req, res) => {
-    await pool.query('CALL insert_author(?, ?, ?);', [req.body.firstName, req.body.lastName, req.body.bio]);
-    res.redirect('/authors');
+    try {
+        await pool.query('CALL insert_author(?, ?, ?);', [req.body.firstName, req.body.lastName, req.body.bio]);
+        res.redirect('/authors');
+    } catch (error) {
+        console.error("Error inserting author: ", error);
+        res.redirect('/authors?error=You cannot insert a duplicate author');
+    }
 });
 
 app.post('/members', async (req, res) => {
@@ -84,7 +92,17 @@ app.post('/members', async (req, res) => {
 });
 
 app.post('/genres', async (req, res) => {
-    await pool.query('CALL insert_genre(?);', [req.body.genreName]);
+    try {
+        if (!req.body.genreName) {
+            res.redirect('/genres?error=Please+fill+in+all+fields');
+            return;
+        }
+        await pool.query('CALL insert_genre(?);', [req.body.genreName]);
+    }
+    catch (error) {
+        res.redirect('/genres?error=You cannot insert a duplicate genre');
+        return;
+    }
     res.redirect('/genres');
 });
 
@@ -104,7 +122,7 @@ app.post('/borrows/insert', async (req, res) => {
         }
         res.redirect('/borrows');
     } catch (err) {
-        console.error("Error processing borrow: ", err);
+        res.redirect('/borrows?error=Failed+to+insert+borrow.+Please+ensure+all+fields+are+filled+out.');
     } finally {
         if (connection) connection.release();
     }
@@ -112,7 +130,6 @@ app.post('/borrows/insert', async (req, res) => {
 
 app.post('/borrows/update', async (req, res) => {
     const { editborrowID, editmember, editstartTime, editreturnTime, editdueTime} = req.body
-    console.log("Updating Borrow: ", editborrowID, editmember, editstartTime, editreturnTime, editdueTime);
     await pool.query('CALL update_borrow(?, ?, ?, ?, ?);', [editborrowID, editmember, editstartTime, editreturnTime, editdueTime]);
 
     await pool.query('CALL clear_books_borrows(?);', [editborrowID]);

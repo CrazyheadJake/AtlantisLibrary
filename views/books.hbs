@@ -6,7 +6,7 @@
     <div class="mb-3">
         <label for="author" class="form-label">Author</label>
         <select class="form-select" id="author" name="author">
-            <option selected>Select an author</option>
+            <option selected value="">Select an author</option>
             {{#each authors}}
             <option value="{{this.authorID}}">{{this.firstName}} {{this.lastName}}</option>
             {{/each}}
@@ -15,7 +15,7 @@
     <div class="mb-3">
         <label for="genre" class="form-label">Genre</label>
         <select class="form-select" id="genre" name="genre">
-            <option selected>Select a genre</option>
+            <option selected value="">Select a genre</option>
             {{#each genres}}
             <option value="{{this.genreCode}}">{{this.genreName}}</option>
             {{/each}}

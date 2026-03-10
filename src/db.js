@@ -48,7 +48,6 @@ async function getFullBorrows() {
         borrows.find(b => b.borrowID === book.borrowID).books = borrows.find(b => b.borrowID === book.borrowID).books || [];
         borrows.find(b => b.borrowID === book.borrowID).books.push({bookID: book.bookID});
     }
-    console.log("Full borrows: ", borrows);
     return borrows;
 }
 
