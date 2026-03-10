@@ -5,6 +5,7 @@ import { pool, resetDb, getAuthors, getBooks, getGenres, getMembers, insertBook,
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { error } from 'console';
+import e from 'express';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -29,12 +30,12 @@ app.set('view engine', 'hbs')
 app.set('views', path.join(__dirname, '../views'))
 
 app.get('/', (req, res) => {
-    res.render('home', { currentPage: 'Home' })
+    res.render('home', { currentPage: 'Home', success: req.query.success })
 })
 
 app.get('/authors', async (req, res) => {
     const authors = await getAuthors()
-    res.render('authors', { currentPage: 'Authors', authors, error: req.query.error })
+    res.render('authors', { currentPage: 'Authors', authors, error: req.query.error, success: req.query.success })
 })
 
 app.get('/books', async (req, res) => {
@@ -43,17 +44,17 @@ app.get('/books', async (req, res) => {
         getBooks(),
         getGenres()
     ]);
-    res.render('books', { currentPage: 'Books', authors, books, genres, booksJSON: JSON.stringify(books), error: req.query.error})
+    res.render('books', { currentPage: 'Books', authors, books, genres, booksJSON: JSON.stringify(books), error: req.query.error, success: req.query.success })
 })
 
 app.get('/members', async (req, res) => {
     const members = await getMembers()
-    res.render('members', { currentPage: 'Members', members })
+    res.render('members', { currentPage: 'Members', members, error: req.query.error, success: req.query.success })
 })
 
 app.get('/genres', async (req, res) => {
     const genres = await getGenres()
-    res.render('genres', { currentPage: 'Genres', genres, error: req.query.error })
+    res.render('genres', { currentPage: 'Genres', genres, error: req.query.error, success: req.query.success })
 })
 
 app.get('/borrows', async (req, res) => {
@@ -63,12 +64,12 @@ app.get('/borrows', async (req, res) => {
         getBorrows(),
         getFullBorrows()
     ]);
-    res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(fullBorrows), error: req.query.error })
+    res.render('borrows', { currentPage: 'Borrows', books, members, borrows, borrowsJSON: JSON.stringify(fullBorrows), error: req.query.error, success: req.query.success })
 })
 
 app.post('/reset', async (req, res) => {
     await resetDb()
-    res.redirect('/')
+    res.redirect('/?success=Database+reset+successfully')
 })
 
 app.post('/books', async (req, res) => {
@@ -78,13 +79,13 @@ app.post('/books', async (req, res) => {
     }
     const { title, author, genre } = req.body
     await insertBook(title, author, genre)
-    res.redirect('/books')
+    res.redirect('/books?success=Book+inserted+successfully')
 })
 
 app.post('/authors', async (req, res) => {
     try {
         await pool.query('CALL insert_author(?, ?, ?);', [req.body.firstName, req.body.lastName, req.body.bio]);
-        res.redirect('/authors');
+        res.redirect('/authors?success=Author+inserted+successfully');
     } catch (error) {
         console.error("Error inserting author: ", error);
         res.redirect('/authors?error=You cannot insert a duplicate author');
@@ -93,7 +94,7 @@ app.post('/authors', async (req, res) => {
 
 app.post('/members', async (req, res) => {
     await pool.query('CALL insert_member(?, ?, ?);', [req.body.firstName, req.body.lastName, req.body.email]);
-    res.redirect('/members');
+    res.redirect('/members?success=Member+inserted+successfully');
 });
 
 app.post('/genres', async (req, res) => {
@@ -108,7 +109,7 @@ app.post('/genres', async (req, res) => {
         res.redirect('/genres?error=You cannot insert a duplicate genre');
         return;
     }
-    res.redirect('/genres');
+    res.redirect('/genres?success=Genre+inserted+successfully');
 });
 
 app.post('/borrows/insert', async (req, res) => {
@@ -119,14 +120,21 @@ app.post('/borrows/insert', async (req, res) => {
             'CALL insert_borrow(?, ?, ?, @borrowID);', 
             [req.body.member, req.body.startTime, req.body.dueTime]
         );
-        
+        console.log("inserted borrow")
         const rows = await connection.query('SELECT @borrowID AS borrowID;');
+        console.log("retrieved borrowID: ", rows[0].borrowID);
         const borrowID = rows[0].borrowID;
+        if (!req.body.books) {
+            res.redirect('/borrows?error=Please+select+at+least+1+book');
+            return;
+        }
         for (const bookID of req.body.books) {
+            console.log(`Adding bookID ${bookID} to borrowID ${borrowID}`);
             await pool.query('CALL add_book_to_borrow(?, ?);', [borrowID, bookID]);
         }
-        res.redirect('/borrows');
+        res.redirect('/borrows?success=Borrow+inserted+successfully');
     } catch (err) {
+        console.log("Error inserting borrow: ", err);
         res.redirect('/borrows?error=Failed+to+insert+borrow.+Please+ensure+all+fields+are+filled+out.');
     } finally {
         if (connection) connection.release();
@@ -150,12 +158,12 @@ app.post('/borrows/update', async (req, res) => {
     for (const bookID of books) {
         await pool.query('CALL add_book_to_borrow(?, ?);', [editborrowID, bookID]);
     }
-    res.redirect('/borrows');
+    res.redirect('/borrows?success=Borrow+updated+successfully');
 });
 
 app.post('/borrows/delete', async (req, res) => {
     await pool.query('CALL delete_borrow(?);', [req.body.borrow]);
-    res.redirect('/borrows');
+    res.redirect('/borrows?success=Borrow+deleted+successfully');
 });
 
 app.listen(PORT, () =>

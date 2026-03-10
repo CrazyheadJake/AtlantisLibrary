@@ -17,6 +17,9 @@
     <main>
         <div class="alert alert-danger m-0" role="alert" id="errormsg" style="display: none;">
             {{error}}
+        </div>        
+        <div class="alert alert-success m-0" role="alert" id="successmsg" style="display: none;">
+            {{success}}
         </div>
         <div class="container-fluid bg-body-secondary min-vh-100 p-5">
             {{{body}}}
@@ -35,9 +38,19 @@
     function showError() {
         document.getElementById("errormsg").style.display = "block";
     }
+    function showSuccess() {
+        document.getElementById("successmsg").style.display = "block";
+    }
+    function hideSuccess() {
+        document.getElementById("successmsg").style.display = "none";
+    }
     if (document.getElementById("errormsg").innerText.trim() !== "") {
         showError();
         setTimeout(hideError, 4000);
+    }
+    if (document.getElementById("successmsg").innerText.trim() !== "") {
+        showSuccess();
+        setTimeout(hideSuccess, 4000);
     }
 </script>
 
