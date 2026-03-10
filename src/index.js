@@ -40,7 +40,7 @@ app.get('/books', async (req, res) => {
     const authors = await getAuthors()
     const books = await getBooks()
     const genres = await getGenres()
-    res.render('books', { currentPage: 'Books', authors, books, genres })
+    res.render('books', { currentPage: 'Books', authors, books, genres, booksJSON: JSON.stringify(books) })
 })
 
 app.get('/members', async (req, res) => {
