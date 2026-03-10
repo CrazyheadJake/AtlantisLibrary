@@ -27,10 +27,27 @@
 </form>
 <br>
 <form class="d-flex">
-    <input class="form-control" type="search" placeholder="Search"/>
-    <button class="btn mx-2 btn-success" type="submit">Search</button>
+    <input class="form-control" type="search" placeholder="Search Books" id="search" oninput="searchBooks()"/>
 </form>
 <br>
+<div id="bookContainer">
 {{#each books}}
-    <div class="alert alert-secondary m-0">{{this.title}} by {{this.firstName}} {{this.lastName}}</div>
+    <div class="alert alert-secondary m-0" id="book-{{this.bookID}}">{{this.title}} by {{this.firstName}} {{this.lastName}}</div>
 {{/each}}
+</div>
+
+<script>
+    function searchBooks() {
+        const query = document.getElementById("search").value;
+        const books = {{{booksJSON}}};
+        for (const book of books) {
+            const bookDiv = document.getElementById(`book-${book.bookID}`);
+            const bookInfo = `${book.title} ${book.firstName} ${book.lastName}`;
+            if (bookInfo.toLowerCase().includes(query.toLowerCase())) {
+                bookDiv.style.display = "block";
+            } else {
+                bookDiv.style.display = "none";
+            }
+        }
+    }
+</script>
