@@ -5,7 +5,12 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {{!-- Using Bootstrap 5.3.8 from jsDelivr CDN --}}
+    {{!-- # Citation for the following CSS link:
+    2 # Date: 2/12/2026
+    3 # Using Bootstrap 5.3.8 from jsDelivr CDN
+    4 # No changes made to the source code
+    5 # Source URL: https://getbootstrap.com/docs/5.0/getting-started/download/
+    --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title>Atlantis Library</title>
@@ -15,17 +20,24 @@
     {{> navbar currentPage=currentPage}}
    
     <main>
+        {{!-- Alerts for errors and successes --}}
         <div class="alert alert-danger m-0" role="alert" id="errormsg" style="display: none;">
             {{error}}
         </div>        
         <div class="alert alert-success m-0" role="alert" id="successmsg" style="display: none;">
             {{success}}
         </div>
+        {{!-- Main body of the page--}}
         <div class="container-fluid bg-body-secondary min-vh-100 p-5">
             {{{body}}}
         </div>
     </main>
-    {{!-- Using Bootstrap 5.3.8 from jsDelivr CDN --}}
+    {{!-- # Citation for the following JS script link:
+    2 # Date: 2/12/2026
+    3 # Using Bootstrap 5.3.8 from jsDelivr CDN
+    4 # No changes made to the source code
+    5 # Source URL: https://getbootstrap.com/docs/5.0/getting-started/download/
+    --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
@@ -44,6 +56,7 @@
     function hideSuccess() {
         document.getElementById("successmsg").style.display = "none";
     }
+    // On load, if there is an error mesesage or success message, show the alert and then hide it after 4 seconds
     if (document.getElementById("errormsg").innerText.trim() !== "") {
         showError();
         setTimeout(hideError, 4000);

@@ -1,4 +1,6 @@
-<form id="newBorrowForm" method="POST" action="/borrows/insert"x>
+{{!-- New Borrow Form --}}
+<form id="newBorrowForm" method="POST" action="/borrows/insert">
+    {{!-- Select the books to borrow--}}
     <div class="mb-3">
         <label for="books" class="form-label">Select one or more books</label>
         <select class="form-select" multiple id="books" name="books">
@@ -7,6 +9,7 @@
             {{/each}}
         </select>
     </div>
+    {{!-- Select the member to borrow the books from --}}
     <div class="mb-3">
         <label for="member" class="form-label">Member</label>
         <select class="form-select" id="member" name="member">
@@ -16,6 +19,7 @@
             {{/each}}
         </select>
     </div>
+    {{!-- Select the start/due times--}}
     <div class="mb-3">
         <label for="startTime" class="form-label">Start Time</label>
         <input type="datetime-local" class="form-control" id="startTime" name="startTime">
@@ -25,10 +29,11 @@
         <input type="datetime-local" class="form-control" id="dueTime" name="dueTime">
     </div>
 
+    {{!-- Borrow button --}}
     <button type="submit" class="btn btn-primary">Borrow Book</button>
 
 </form>
-
+{{!-- Update borrow modal --}}
 <div class="modal fade" id="editBorrow" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -37,8 +42,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                {{!-- Update borrow form --}}
                 <form id="editBorrowForm" method="POST" action="/borrows/update">
                     <input type="hidden" id="editborrowID" name="editborrowID">
+                    {{!-- Select the books to borrow --}}
                     <div class="mb-3">
                         <label for="bookName" class="form-label">Select one or more books</label>
                         <select class="form-select" multiple id="editbookName" name="editbookName">
@@ -47,6 +54,7 @@
                             {{/each}}
                         </select>
                     </div>
+                    {{!-- Select the member to borrow the books from--}}
                     <div class="mb-3">
                         <label for="member" class="form-label">Member</label>
                         <select class="form-select" id="editmember" name="editmember">
@@ -56,6 +64,7 @@
                             {{/each}}
                         </select>
                     </div>
+                    {{!-- Select the start/due/return times --}}
                     <div class="mb-3">
                         <label for="startTime" class="form-label">Start Time</label>
                         <input type="datetime-local" class="form-control" id="editstartTime" name="editstartTime">
@@ -70,6 +79,7 @@
                     </div>
                 </form>
             </div>
+            {{!-- Close the modal or update the borrow buttons --}}
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary" form="editBorrowForm" onclick="location.reload()">Update Borrow</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -78,8 +88,10 @@
     </div>
 </div>
 <br>
+{{!-- Selection of borrow form along with the button to open the modal and a button to delete the borrow --}}
 <form>
     <div class="row mb-3">
+        {{!-- Select the borrow --}}
         <label for="borrow" class="form-label">Borrow to Edit</label>
         <div class="col">
             <select class="form-select" name="borrow" id="borrow">
@@ -89,11 +101,13 @@
                 {{/each}}
             </select>
         </div>
+        {{!-- Update the borrow --}}
         <div class="col-auto">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editBorrow" onclick="setBorrow()">
                 Update Borrow
             </button>
         </div>
+        {{!-- Delete the borrow --}}
         <div class="col-auto">
             <button type="submit" class="btn btn-danger" formmethod="POST" formaction="/borrows/delete">
                 Delete Borrow

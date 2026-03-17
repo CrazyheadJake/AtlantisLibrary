@@ -1,3 +1,4 @@
+{{!-- New Book Form --}}
 <form method="POST" action="/books">
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
@@ -26,6 +27,7 @@
     </div>
 </form>
 <br>
+{{!-- Search bar for books, leaving it empty will show all books--}}
 <form class="d-flex">
     <input class="form-control" type="search" placeholder="Search Books" id="search" oninput="searchBooks()"/>
 </form>
@@ -37,6 +39,7 @@
 </div>
 
 <script>
+    // On every key press, this function gets called to filter the shown books by those that match the search query
     function searchBooks() {
         const query = document.getElementById("search").value;
         const books = {{{booksJSON}}};
