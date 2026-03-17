@@ -9,6 +9,9 @@ const pool = createPool({
     database: process.env.DB_USERNAME,
     connectionLimit: 5
 });
+console.log("db: ", process.env.DB_HOST)
+console.log("user: ", process.env.DB_USERNAME)
+console.log("password: ", process.env.DB_PASSWORD)
 
 // Reset the database to just the original test data
 async function resetDb() {
