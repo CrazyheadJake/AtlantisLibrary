@@ -1,11 +1,12 @@
 import { createPool } from 'mariadb'
+import 'dotenv/config'; 
 
 // Open up a connection pool to the MariaDB database
 const pool = createPool({
-    host: 'classmysql.engr.oregonstate.edu',
-    user: 'cs340_moleskij',
-    password: '1768',
-    database: 'cs340_moleskij',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_USERNAME,
     connectionLimit: 5
 });
 
